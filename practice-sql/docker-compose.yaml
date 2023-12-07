@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  db-psql:
+    image: postgres
+    container_name: practice-psql
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_DB: Company
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: supervisor
+      POSTGRES_PASSWORD: qwer
+      POSTGRES_SSL_MODE: disable
+    volumes:
+      - practice-db:/var/lib/postgresql/data
+    ports:
+      - "54321:5432"
+
+volumes:
+  practice-db:
