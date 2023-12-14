@@ -23,7 +23,21 @@ func NewMigrator(db *sql.DB, sourceUrl, dbName string) *migrator {
 	}
 }
 
-func (m migrator) Up(steps ...int) error {
+// steps must be upper zero
+func (m migrator) Up(step int) error {
+	return m.moveMigration(step)
+}
+
+// steps must be upper zero
+func (m migrator) Down(step int) error {
+	return m.moveMigration(-step)
+}
+
+func (m migrator) ActualUpdate() error {
+	return m.moveMigration()
+}
+
+func (m migrator) moveMigration(steps ...int) error {
 	if len(steps) > 1 {
 		return fmt.Errorf("too many arguments, must be only one or zero")
 	}
