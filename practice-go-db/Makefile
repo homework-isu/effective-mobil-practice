@@ -20,3 +20,11 @@ docker-up:
 
 db-connect:
 	@docker exec -it test-storage psql -U test-user -d test
+
+redis-connect:
+	@docker exec -it redis redis-cli
+
+mock-gen:
+	@go get github.com/golang/mock/gomock
+	@mockgen -source=internal/core/ports/repository/department.go -destination=pkg/mocks/repository/department_mock.go
+	@mockgen -source=internal/http/service/department.go -destination=pkg/mocks/service/department_mock.go
