@@ -25,6 +25,8 @@ type Config struct {
 	db_pass            string
 	db_ssl_mode        string
 	db_max_connections int
+
+	http_port string
 }
 
 // postgres://jack:secret@pg.example.com:5432/mydb?sslmode=verify-ca&pool_max_conns=10
@@ -37,6 +39,10 @@ func (cfg Config) GetMaxConnections() int {
 	return cfg.db_max_connections
 }
 
+func (cfg Config) GetHttpPort() string {
+	return cfg.http_port
+}
+
 func NewConfig() *Config {
 	cfg := &Config{
 		db_host:            "localhost",
@@ -46,6 +52,7 @@ func NewConfig() *Config {
 		db_pass:            "",
 		db_ssl_mode:        "disable",
 		db_max_connections: 10,
+		http_port: "8080",
 	}
 
 	host := os.Getenv("POSTGRES_HOST")
@@ -78,6 +85,10 @@ func NewConfig() *Config {
 		if err != nil {
 			cfg.db_max_connections = val
 		}
+	}
+	http_port := os.Getenv("HTTP_PORT")
+	if http_port != "" {
+		cfg.http_port = http_port
 	}
 
 	return cfg
