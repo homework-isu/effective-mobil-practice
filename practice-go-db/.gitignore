@@ -1,2 +1,4 @@
 *.exe
-/pkg/mocks/*
+*.exe~
+*/mocks/*
+
