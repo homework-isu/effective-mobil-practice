@@ -13,3 +13,13 @@ services:
       POSTGRES_SSL_MODE: ${POSTGRES_SSL_MODE}
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+
+  redis:
+      image: "redis:latest"
+      container_name: "redis"
+      ports:
+        - "${REDIS_PORT}:${REDIS_PORT}"
+      environment:
+        - REDIS_DB=${REDIS_DB}
+        - REDIS_PASSWORD=${REDIS_PASSWORD}
+      command: ["redis-server", "--databases", "${REDIS_DB}"]
