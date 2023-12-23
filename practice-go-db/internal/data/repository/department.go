@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	core_errors "go-db/internal/core/errors"
 	"go-db/internal/core/domain"
 	"go-db/internal/core/dto"
 )
@@ -72,14 +73,19 @@ func (r departmentRepository) GetDepartments(ctx context.Context, dto *dto.Limit
 
 
 func (r departmentRepository) AddDepartment(ctx context.Context, dto *dto.AddDepartmentDTO) (*domain.Department, error) {
+	op := "Department Repository: AddDepartment"
 	conn, err := r.dbManager.GetConnection(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	stmt := conn.QueryRowContext(ctx, "INSERT INTO departments (title) VALUES ($1) RETURNING id, title", dto.Title)
-
-	return scanDepartment(stmt)
+	res, err := scanDepartment(stmt)
+	if err != nil {
+		err = fmt.Errorf("%s: %w", err.Error(), core_errors.ErrorFailToAddDepartment)
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+	return res, nil
 }
 
 func (r departmentRepository) DeleteDepartment(ctx context.Context, dto *dto.IdDerartmentDTO) error {

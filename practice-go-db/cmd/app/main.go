@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	if err := config.LoadEnv(".env"); err != nil {
+	if err := config.LoadEnv("./test_env/.env"); err != nil {
 		panic(err)
 	}
 
