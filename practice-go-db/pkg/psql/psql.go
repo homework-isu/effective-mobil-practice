@@ -1,9 +1,10 @@
 package psql
 
 import (
-	"database/sql"
-	_ "github.com/jackc/pgx/v5/stdlib"
 	"context"
+	"database/sql"
+
+	_ "github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -22,6 +23,7 @@ func NewDbManager(url string, maxConnsInPool int) (*dbManager, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	db.SetMaxIdleConns(maxConnsInPool)
 	return &dbManager{
 		db: db,

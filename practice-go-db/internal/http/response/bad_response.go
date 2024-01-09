@@ -11,7 +11,13 @@ type BadResponse struct {
 }
 
 func NewBadResponse(err error) *BadResponse {
+	new_err := errors.Unwrap(err)
+	if new_err != nil {
+		return &BadResponse{
+			Error: new_err.Error(),
+		}
+	}
 	return &BadResponse{
-		Error: errors.Unwrap(err).Error(),
+		Error: err.Error(),
 	}
 }

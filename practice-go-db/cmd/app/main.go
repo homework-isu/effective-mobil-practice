@@ -8,7 +8,7 @@ import (
 	"go-db/internal/core/service"
 	"go-db/internal/data/repository"
 	"go-db/internal/http/api"
-	"go-db/internal/http/hendler"
+	"go-db/internal/http/handler"
 	"time"
 
 	"go-db/pkg/config"
@@ -29,8 +29,8 @@ func main() {
 
 	departmentRepository := repository.NewDepartmentRepository(pgClient)
 	departmentServcie := service.NewDepartmentService(departmentRepository)
-	departmentHendler := hendler.NewDepartmentHendler(departmentServcie, time.Duration(10 * time.Second))
-	api := api.NewApi(cfg.GetHttpPort(), departmentHendler)
+	departmentHandler := handler.NewDepartmentHandler(departmentServcie, time.Duration(10 * time.Second))
+	api := api.NewApi(cfg.GetHttpPort(), departmentHandler)
 
 	fmt.Println("server works on :", cfg.GetHttpPort())
 	if err := api.Run(); err != nil {

@@ -2,22 +2,22 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-db/internal/http/hendler"
+	"go-db/internal/http/handler"
 )
 
 type api struct {
 	server *gin.Engine
-	departmentHendler *hendler.DepartmentHendler
+	departmentHandler *handler.DepartmentHandler
 	port string
 }
 
-func NewApi(port string, dh *hendler.DepartmentHendler) *api {
+func NewApi(port string, dh *handler.DepartmentHandler) *api {
 	server := gin.Default()
 
 	api := &api{
 		server: server,
 		port: port,
-		departmentHendler: dh,
+		departmentHandler: dh,
 	}
 
 	api.bind()
@@ -26,11 +26,11 @@ func NewApi(port string, dh *hendler.DepartmentHendler) *api {
 }
 
 func (api *api) bind() {
-	api.server.GET("/department", api.departmentHendler.GetDepartment)
-	api.server.GET("/departments", api.departmentHendler.GetDepartments)
-	api.server.POST("/department", api.departmentHendler.AddDepartment)
-	api.server.DELETE("/department", api.departmentHendler.DeleteDepartment)
-	api.server.PUT("/department", api.departmentHendler.RenameDepartment)
+	api.server.GET("/department", api.departmentHandler.GetDepartment)
+	api.server.GET("/departments", api.departmentHandler.GetDepartments)
+	api.server.POST("/department", api.departmentHandler.AddDepartment)
+	api.server.DELETE("/department", api.departmentHandler.DeleteDepartment)
+	api.server.PUT("/department", api.departmentHandler.RenameDepartment)
 }
 
 func (api api) Run() error {

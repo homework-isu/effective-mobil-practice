@@ -22,7 +22,9 @@ func NewDepartmentService(repo repository.DepartmentRepository) *departmentServi
 func (s *departmentService) AddDepartment(ctx context.Context, dto *dto.AddDepartmentDTO) (*domain.Department, error) {
 	op := "Department Service: AddDepartment"
 	department, err := s.repo.AddDepartment(ctx, dto)
+	fmt.Println(dto)
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, fmt.Errorf("%s: %w", op, core_errors.ErrorFailToAddDepartment)
 	}
 	return department, nil

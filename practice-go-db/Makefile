@@ -34,3 +34,13 @@ run-test-env:
 
 db-test-connect:
 	@docker exec -it test-env-storage psql -U test-user -d test_db
+
+unit-tests:
+	@go test ./internal/http/handler/
+	@go test ./internal/core/service/
+
+integration-tests: run-test-env
+	@go test ./internal/http/api
+	@go test ./internal/data/repository
+ 
+all-tests: integration-tests unit-tests

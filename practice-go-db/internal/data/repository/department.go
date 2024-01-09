@@ -44,7 +44,7 @@ func (r departmentRepository) GetDepartments(ctx context.Context, dto *dto.Limit
 		return nil, err
 	}
 
-	query := "SELECT id, title FROM departments"
+	query := "SELECT id, title FROM departments ORDER BY id"
 	if dto.Limit > 0 {
 		query += fmt.Sprintf(" LIMIT %d", dto.Limit)
 	}
@@ -53,7 +53,6 @@ func (r departmentRepository) GetDepartments(ctx context.Context, dto *dto.Limit
 		query += fmt.Sprintf(" OFFSET %d", dto.Offset)
 	}
 
-	fmt.Println(query)
 	stmt, err := conn.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -82,6 +81,7 @@ func (r departmentRepository) AddDepartment(ctx context.Context, dto *dto.AddDep
 	stmt := conn.QueryRowContext(ctx, "INSERT INTO departments (title) VALUES ($1) RETURNING id, title", dto.Title)
 	res, err := scanDepartment(stmt)
 	if err != nil {
+		fmt.Println("WTF", err.Error())
 		err = fmt.Errorf("%s: %w", err.Error(), core_errors.ErrorFailToAddDepartment)
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
